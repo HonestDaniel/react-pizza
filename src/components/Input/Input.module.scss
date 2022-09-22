@@ -1,0 +1,35 @@
+.root {
+    position: relative;
+    left: 10vw;
+}
+
+.input {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+    padding-left: 30px;
+    border-radius: 5px;
+    width: 300px;
+    font-size: 16px;
+    outline: none;
+    &:focus {
+        border: 1px solid rgba(0, 0, 0, 0.3)
+    }
+}
+
+.cancel {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    left: 270px;
+    top: 5px;
+    opacity: 0.5;
+}
+
+.icon {
+    width: 22px;
+    height: 22px;
+    opacity: 0.5;
+    top: 5px;
+    left: 5px;
+    position: absolute;
+}
