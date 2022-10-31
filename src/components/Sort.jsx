@@ -5,19 +5,32 @@ import { setSortType } from "../redux/slices/filterSlice"
 export default function Sort() {
     const dispatch = useDispatch()
     const sortType = useSelector(state => state.filter.sortType)
-
-    const onClickSortType = (obj) => {
-      dispatch(setSortType(obj))
-    }
-
-    const [popup, setPopup] = React.useState(false) 
+    const [popup, setPopup] = React.useState(false)  
+    const sortRef = React.useRef()
     const menu = [
       {name: 'популярности', sortProperty: 'rating'},
       {name: 'цене', sortProperty: 'price'},
       {name: 'aлфавиту', sortProperty: 'title'}]
 
+    const onClickSortType = (obj) => {
+      dispatch(setSortType(obj))
+    }
+
+    React.useEffect(() => {
+      const clickedOutside = (event) => {
+        if (!event.path.includes(sortRef.current)) {
+          setPopup(false)
+        }
+      }
+      document.body.addEventListener('click', clickedOutside)
+      return () => {
+        document.body.removeEventListener('click', clickedOutside)
+      }
+    }, [])
+
+
     return (
-        <div className="sort">
+        <div ref={sortRef} className="sort">
         <div className="sort__label">
           <svg
             width="10"

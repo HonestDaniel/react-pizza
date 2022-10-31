@@ -14,18 +14,16 @@ export default function Input() {
     const inputRef = React.useRef()
 
     const onChangeValue = (event) => {
-        console.log(1)
         setValue(event.target.value)
         updateSearchValue(event.target.value)
     }
-
+// eslint-disable-next-line 
     const updateSearchValue = React.useCallback(
-        debounce((str) => {
-            dispatch(setSearchValue(str))
+        debounce((str) => {dispatch(setSearchValue(str))
         }, 250),
         [],
     )
-
+    
     const onClickCancel = () => {
         dispatch(setSearchValue(''))
         setValue('')

@@ -5,14 +5,16 @@ import Pizza from '../components/Pizza-block/index'
 import PizzaSkeleton from '../components/Pizza-block/Pizza-skeleton';
 import Pagination from "../components/Pagination";
 import axios from 'axios'
+import qs from 'qs'
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setCategoryId, setPageCount } from "../redux/slices/filterSlice";
+import { setCategoryId, setPageCount, setFilters } from "../redux/slices/filterSlice";
 
 export default function Home() {
     //const {searchValue} = React.useContext(AppContext)
     const [items, setItems] = React.useState([])
     const [isLoading, setIsLoading] = React.useState(true)
-
+    const navigate = useNavigate()
     const dispatch =  useDispatch()
 
     const onClickCategory = (id) => {
@@ -47,6 +49,28 @@ export default function Home() {
       window.scrollTo(0, 0)
     }, [categoryId, sortType, searchValue, pageCount])
 
+    React.useEffect(() => {
+      const queryString = qs.stringify({
+        sortProperty: sortType.sortProperty,
+        categoryId,
+        pageCount
+      })
+     navigate(`?${queryString}`)
+    }, [categoryId, sortType, searchValue, pageCount])
+
+    React.useEffect(() => {
+      if (window.location.search) {
+        const params = qs.parse(window.location.search.substring(1))
+
+      //  const sort = menu.find(obj => obj.sortProperty === params.sortProperty)
+
+        // dispatch(
+        //   setFilters({
+        //     ...params,
+        //   })
+        // )
+      }
+    }, [])
     // .filter(obj => (obj.title.toLowerCase()
     // .includes(searchValue.toLowerCase())))
 
