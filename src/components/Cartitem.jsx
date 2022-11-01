@@ -1,8 +1,8 @@
 import React from "react";
 
 const CartItem = ({ id, title, type, price, count, imageUrl }) => {
+  //2121
   const [counter, setCount] = React.useState(count);
-
   return (
     <div class="cart__item">
       <div class="cart__item-img">

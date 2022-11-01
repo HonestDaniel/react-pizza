@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import CartItem from "../components/Cartitem";
 
 export default function Cart() {
+  //212121
   const { items, totalPrice } = useSelector((state) => state.cart);
   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
 
