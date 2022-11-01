@@ -2,6 +2,7 @@ import React from "react";
 
 const CartItem = ({ id, title, type, price, count, imageUrl }) => {
   const [counter, setCount] = React.useState(count);
+
   return (
     <div class="cart__item">
       <div class="cart__item-img">
@@ -33,7 +34,9 @@ const CartItem = ({ id, title, type, price, count, imageUrl }) => {
         <b>{count}</b>
         <div
           class="button button--outline button--circle cart__item-count-plus"
-          onClick={() => {setCount(counter + 1)}}
+          onClick={() => {
+            setCount(counter + 1);
+          }}
         >
           <svg
             width="10"
