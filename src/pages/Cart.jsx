@@ -91,6 +91,7 @@ export default function Cart() {
                   />
                 </svg>
 
+
                 <span>Очистить корзину</span>
               </div>
             ) : (
