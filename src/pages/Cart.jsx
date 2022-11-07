@@ -2,6 +2,8 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearItems } from "../redux/slices/cartSlice";
 import CartItem from "../components/Cartitem";
+import CartEmpty from "../components/CartEmpty";
+import {Link} from 'react-router-dom'
 
 export default function Cart() {
   const { items, totalPrice } = useSelector((state) => state.cart);
@@ -14,6 +16,12 @@ export default function Cart() {
       dispatch(clearItems());
     }
   };
+
+  if (items.length === 0) {
+    return (
+      <CartEmpty/>
+    )
+  }
 
   return (
     <div className="container container--cart">
@@ -114,7 +122,7 @@ export default function Cart() {
             </span>
           </div>
           <div class="cart__bottom-buttons">
-            <a href="/" class="button button--outline button--add go-back-btn">
+            <Link to="/" class="button button--outline button--add go-back-btn">
               <svg
                 width="8"
                 height="14"
@@ -132,7 +140,7 @@ export default function Cart() {
               </svg>
 
               <span>Вернуться назад</span>
-            </a>
+            </Link>
             <div class="button pay-btn">
               <span>Оплатить сейчас</span>
             </div>

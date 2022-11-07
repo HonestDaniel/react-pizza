@@ -9,8 +9,8 @@ export default function Pizza({id, title = 'Pizza', price = 350, sizes, imageUrl
     const cartItem = useSelector(state => state.cart.items.find((obj) => obj.id === id))
 
     const [pizzaCounter, setPizzaCounter] = useState(0)
-    const [activeSize, setSizeActive] = useState()
-    const [activeType, setTypeActive] = useState()
+    const [activeSize, setSizeActive] = useState(0)
+    const [activeType, setTypeActive] = useState(0)
 
     const addedCount = cartItem ? cartItem.count : 0
 
