@@ -9,10 +9,10 @@ import qs from 'qs'
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setCategoryId, setPageCount, setFilters } from "../redux/slices/filterSlice";
+import { setItems } from "../redux/slices/pizzaSlice";
 
 export default function Home() {
-    //const {searchValue} = React.useContext(AppContext)
-    const [items, setItems] = React.useState([])
+
     const [isLoading, setIsLoading] = React.useState(true)
     const navigate = useNavigate()
     const dispatch =  useDispatch()
@@ -24,29 +24,31 @@ export default function Home() {
     const onChangePage = (number) => {
       dispatch(setPageCount(number))
     }
-   // const sortType = useSelector((state) => state.filter.sortType)
+
     const { categoryId, sortType, pageCount } = useSelector((state) => state.filter)
     const searchValue = useSelector((state) => state.search.searchValue)
+    const items = useSelector((state) => state.pizza.items)
 
-    React.useEffect(() => {
+    const fetchPizza = async () => {
       setIsLoading(true)
 
       const search = searchValue ? `&search=${searchValue}` : ''; 
       const category = categoryId > 0 ? `category=${categoryId}` : '';
-      // fetch(`https://63077e9b3a2114bac7640254.mockapi.io/items?page=${currentPage}&limit=5${categoryId > 0 ? 
-      // `category=${categoryId}` : ''}&sortBy=${sortType.sortProperty}&order=desc${search}`)
-      // .then((res) => res.json())
-      //   .then((json) => {
-      //     setItems(json)
-      //     setIsLoading(false)
-      //   })
-      axios.get(`https://63077e9b3a2114bac7640254.mockapi.io/items?page=${pageCount}&limit=4&${category}&sortBy=${sortType.sortProperty}&order=desc${search}`
-      )
-      .then(response => {
-        setItems(response.data)
-        setIsLoading(false)
-      })
+
+      try {
+        const { data } = await axios.get(`https://63077e9b3a2114bac7640254.mockapi.io/items?page=${pageCount}&limit=4&${category}&sortBy=${sortType.sortProperty}&order=desc${search}`
+        );
+        dispatch(setItems(data))
+      } catch (error) {
+        console.log('ERROR', error);
+      } finally {
+        setIsLoading(false);
+      }
       window.scrollTo(0, 0)
+  }
+
+    React.useEffect(() => {
+      fetchPizza();
     }, [categoryId, sortType, searchValue, pageCount])
 
     React.useEffect(() => {
