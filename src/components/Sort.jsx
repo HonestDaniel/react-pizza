@@ -1,10 +1,10 @@
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { setSortType } from "../redux/slices/filterSlice"
+import { selectSort, setSortType } from "../redux/slices/filterSlice"
 
 export default function Sort() {
     const dispatch = useDispatch()
-    const sortType = useSelector(state => state.filter.sortType)
+    const sortType = useSelector(selectSort)
     const [popup, setPopup] = React.useState(false)  
     const sortRef = React.useRef()
     const menu = [

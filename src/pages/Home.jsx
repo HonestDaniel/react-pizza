@@ -8,12 +8,11 @@ import axios from 'axios'
 import qs from 'qs'
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setCategoryId, setPageCount, setFilters } from "../redux/slices/filterSlice";
-import { setItems } from "../redux/slices/pizzaSlice";
+import { setCategoryId, setPageCount, selectFilter } from "../redux/slices/filterSlice";
+import { fetchPizza, selectPizzaData } from "../redux/slices/pizzaSlice";
 
 export default function Home() {
 
-    const [isLoading, setIsLoading] = React.useState(true)
     const navigate = useNavigate()
     const dispatch =  useDispatch()
 
@@ -25,30 +24,27 @@ export default function Home() {
       dispatch(setPageCount(number))
     }
 
-    const { categoryId, sortType, pageCount } = useSelector((state) => state.filter)
+    const { categoryId, sortType, pageCount } = useSelector(selectFilter)
     const searchValue = useSelector((state) => state.search.searchValue)
-    const items = useSelector((state) => state.pizza.items)
+    const { items, status } = useSelector(selectPizzaData)
 
-    const fetchPizza = async () => {
-      setIsLoading(true)
+    const getPizza = async () => {
 
       const search = searchValue ? `&search=${searchValue}` : ''; 
       const category = categoryId > 0 ? `category=${categoryId}` : '';
 
-      try {
-        const { data } = await axios.get(`https://63077e9b3a2114bac7640254.mockapi.io/items?page=${pageCount}&limit=4&${category}&sortBy=${sortType.sortProperty}&order=desc${search}`
-        );
-        dispatch(setItems(data))
-      } catch (error) {
-        console.log('ERROR', error);
-      } finally {
-        setIsLoading(false);
-      }
+      dispatch(fetchPizza(
+          {
+            search,
+            category,
+            pageCount,
+            sortType
+          }))
       window.scrollTo(0, 0)
   }
 
     React.useEffect(() => {
-      fetchPizza();
+      getPizza();
     }, [categoryId, sortType, searchValue, pageCount])
 
     React.useEffect(() => {
@@ -88,7 +84,7 @@ export default function Home() {
             </div>
             <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">
-                {isLoading ? [...new Array(6)].map((_, index) => (<PizzaSkeleton key={index}/>)) 
+                {status === 'loading' ? [...new Array(6)].map((_, index) => (<PizzaSkeleton key={index}/>)) 
                 : pizzas
                 }
             </div>
