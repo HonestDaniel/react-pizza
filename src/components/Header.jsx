@@ -1,11 +1,13 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import {Link} from 'react-router-dom'
+import {Link, useLocation} from 'react-router-dom'
 import logo from '../assets/img/pizza-logo.svg'
+import { selectCart } from '../redux/slices/cartSlice'
 import Input from './Input'
 
 export default function Header() {
-    const {items, totalPrice} = useSelector(state => state.cart)
+    const {items, totalPrice} = useSelector(selectCart);
+    const location = useLocation()
     let counter = 0;
     items.map(obj => counter += obj.count)
     return (
@@ -21,8 +23,9 @@ export default function Header() {
         </div>
       </Link>
       <Input/>
-      <Link to='cart'>
-        <div className="header__cart">
+      <div className="header__cart">
+        {location.pathname != '/cart' && (
+          <Link to='cart'>
           <button className="button button--cart">
             <span>{totalPrice} ₽</span>
             <div className="button__delimiter"></div>
@@ -57,8 +60,9 @@ export default function Header() {
             </svg>
             <span>{ counter }</span>
           </button>
-        </div>
-      </Link>
+        </Link>
+        )}       
+      </div>
       </div>
     </div>
     )
