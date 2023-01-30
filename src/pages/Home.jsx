@@ -4,6 +4,7 @@ import Sort from '../components/Sort'
 import Pizza from '../components/Pizza-block/index'
 import PizzaSkeleton from '../components/Pizza-block/Pizza-skeleton';
 import Pagination from "../components/Pagination";
+import { Link } from "react-router-dom";
 import axios from 'axios'
 import qs from 'qs'
 import { useNavigate } from "react-router-dom";
